@@ -13,10 +13,11 @@ const letters = {
     "А": "A", "Б": "B", "В": "V", "Г": "G", "Д": "D", "Е": "E", "Ё": "O", "Ж": "Ž", "З": "Z", "И": "I", "Й": "J",
     "К": "K", "Л": "L", "М": "M", "Н": "N", "О": "O", "П": "P", "Р": "R", "С": "S", "Т": "T", "У": "U", "Ф": "F",
     "Х": "H", "Ц": "C", "Ч": "Č", "Ш": "Š", "Щ": "Št", "Ъ": "", "Ы": "Ï", "Ь": "", "Э": "Ë", "Ю": "U", "Я": "A",
+    "Ѣ": "E", "Ҥ": "N", "І": "I", "Ѳ": "Kv",
     "а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "е": "e", "ё": "o", "ж": "ž", "з": "z", "и": "i", "й": "j",
     "к": "k", "л": "l", "м": "m", "н": "n", "о": "o", "п": "p", "р": "r", "с": "s", "т": "t", "у": "u", "ф": "f",
     "х": "h", "ц": "c", "ч": "č", "ш": "š", "щ": "št", "ь": "", "ъ": "", "ы": "ï", "э": "ë", "ю": "u", "я": "a",
-    "ѣ": "e", "ҥ": "n", "і": "i"
+    "ѣ": "e", "ҥ": "n", "і": "i", "ѳ": "kv"
 };
 
 const palatals = {
@@ -31,48 +32,47 @@ const nondentals = "БВГЖКПМШбвгжкпмш";
 function transliterate(text) {
     text = " " + text + " ";
 
-    text = text.replace(/([е])([и])([я])/g, '$1j$2j$3');
-    text = text.replace(/([аоуыэяёюиеъьі])([еёиюя])/g, '$1j$2');
-    text = text.replace(/([АОУЫЭЯЁЮИЕЪЬІ])([еёиюя])/g, '$1j$2');
+    text = text.replace(/([е])([и])([я])([і])/g, '$1j$2j$3');
+    text = text.replace(/([аоуыэяёюиеъьі])([еёиюяі])/g, '$1j$2');
+    text = text.replace(/([АОУЫЭЯЁЮИЕЪЬІ])([еёиюяі])/g, '$1j$2');
 
-    text = text.replace(/(^|\s|[.,!?;:()\[\]{}"“”«»])([еёюя])/g, '$1j$2');
-    text = text.replace(/(^|\s|[.,!?;:()\[\]{}"“”«»])([ЕЁЮЯ])/g, '$1J$2');
-    text = text.replace(/-([еёюя])/g, '-j$1');
-    text = text.replace(/-([ЕЁЮЯ])/g, '-J$1');
+    text = text.replace(/(^|\s|[.,!?;:()\[\]{}"“”«»\-])([ёюя])/g, '$1j$2');
+    text = text.replace(/(^|\s|[.,!?;:()\[\]{}"“”«»\-])([ЁЮЯ])/g, '$1J$2');
+    text = text.replace(/-([ёюя])/g, '-j$1');
+    text = text.replace(/-([ЁЮЯ])/g, '-J$1');
 
-    text = text.replace(/([аеёиоуыэюя])э/g, '$1e').replace(/(?:^|\s)э/g, ' e');
-    text = text.replace(/([АЕЁИОУЫЭЮЯ])Э/g, '$1e').replace(/(?:^|\s)Э/g, ' E');
-    text = text.replace(/(?:^|\s)и/g, ' i');
-    text = text.replace(/(?:^|\s)И/g, ' I');
-    text = text.replace(/-([э])/g, '-e');
-    text = text.replace(/-([Э])/g, '-E');
+    text = text.replace(/([аеёиоуыэюя])э/g, '$1e')
+    text = text.replace(/([АЕЁИОУЫЭЮЯ])Э/g, '$1e')
+    text = text.replace(/(^|\s|[.,!?;:()\[\]{}"“”«»\-])э/g, '$1e');
+    text = text.replace(/(^|\s|[.,!?;:()\[\]{}"“”«»\-])Э/g, '$1E');
+    text = text.replace(/(^|\s|[.,!?;:()\[\]{}"“”«»\-])і/g, '$1i');
+    text = text.replace(/(^|\s|[.,!?;:()\[\]{}"“”«»\-])І/g, '$1I');
 
     text = text.replace(/([бвгджзйклмнпрстфхцчшщ])я/g, '$1ä');
     text = text.replace(/([БВГДЖЗЙКЛМНПРСТФХЦЧШЩ])я/g, '$1ä');
     text = text.replace(/([ДЗЛНРСТЦдзлнрстц])е/g, '$1e');
     text = text.replace(/([ДЗЛНРСТЦдзлнрстц])и/g, '$1i');
 
-    text = text.replace(/дь(?=[дзлнрстц])/g, 'd');
-    text = text.replace(/зь(?=[дзлнрстц])/g, 'z');
-    text = text.replace(/ль(?=[дзлнрстц])/g, 'l');
-    text = text.replace(/нь(?=[дзлнрстц])/g, 'n');
-    text = text.replace(/рь(?=[дзлнрстц])/g, 'r');
-    text = text.replace(/сь(?=[дзлнрстц])/g, 's');
-    text = text.replace(/ть(?=[дзлнрстц])/g, 't');
-    text = text.replace(/ць(?=[дзлнрстц])/g, 'c');
+    text = text.replace(/([дзлнрстц])ь(?=[дзлнрстц])/g, '$1');
+    text = text.replace(/([бвгжкмпфхчшщ])ь/g, '$1');
     text = text.replace(/ъ/g, '');
     text = text.replace(/(\s|^)і/g, '$1j');
     text = text.replace(/і([аеёиоуыэюяАЕЁИОУЫЭЮЯ])/g, 'j$1');
     text = text.replace(/([БВГЖКПМШбвгжкпмш])ь/g, '$1');
     
-    
+    text = text.replace(/И/g, 'I');
+    text = text.replace(/Е/g, 'E');
     text = text.replace(/([ИЕЁЮЯ])([^А-Я])/g, function(match, p1, p2) {
         return p1.toLowerCase() + p2;
     });
 
     for (const [key, value] of Object.entries(palatals)) {
-        const regex = new RegExp(key + 'ь', 'g');
-        text = text.replace(regex, value);
+        const regexVowel = new RegExp(key + 'ь([аеёиоуыэюяАЕЁИОУЫЭЮЯ])', 'g');
+        text = text.replace(regexVowel, value + '-$1');
+
+        const regexNoVowel = new RegExp(key + 'ь', 'g');
+        text = text.replace(regexNoVowel, value);
+
         text = text.replace(new RegExp(key + `([${front}])`, 'g'), value + '$1');
     }
 
