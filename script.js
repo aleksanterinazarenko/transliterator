@@ -31,8 +31,8 @@ const nondentals = "БВГЖКПМШбвгжкпмш";
 function transliterate(text) {
     text = " " + text + " ";
 
-    text = text.replace(/([дзлнрстц])ь(?=[дзнрстц]+[еёияіь])/g, '$1');
-    text = text.replace(/([дзлнрстц])ь(?=[дзнрстц]+[эы])/g, '$1');
+    text = text.replace(/([дзнрстц])ь(?=[дзнрстц]+[еёияіь])/g, '$1');
+    text = text.replace(/([дзнрстц])ь(?=[дзнрстц]+[эы])/g, '$1');
     text = text.replace(/([дзлнрстц])ь(?=[еёияіь])/g, '$1j');
 
     text = text.replace(/([\u0301])/g, '');
